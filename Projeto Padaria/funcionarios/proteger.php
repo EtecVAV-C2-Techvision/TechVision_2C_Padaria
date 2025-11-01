@@ -6,7 +6,7 @@ if (!isset($_SESSION['usuario']) || !isset($_SESSION['funcao'])) {
     exit();
 }
 
-$funcoes_permitidas = ['gerente', 'funcionario', 'repositor'];
+$funcoes_permitidas = ['gerente', 'funcionario', 'repositor', 'entregador'];
 
 if (!in_array(strtolower($_SESSION['funcao']), $funcoes_permitidas)) {
     echo "Função de usuário inválida.";

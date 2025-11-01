@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01/11/2025 às 16:21
+-- Tempo de geração: 02/11/2025 às 00:38
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -44,7 +44,8 @@ CREATE TABLE `clientes` (
 
 INSERT INTO `clientes` (`idCli`, `nome_completo`, `email`, `usuario`, `senha`, `endereco`, `telefone`, `data_cadastro`) VALUES
 (1, 'Gustavo', 'gustavo@grano.com', 'GG', '$2y$10$eCrP2yojbGvbgvYfHNbPm.RvAM8BBjeP9GEH2/yzm5nScvLmIxpKi', 'Rua Tutóia', '12112313231331213', '2025-10-29 21:01:32'),
-(3, 'cliente um', 'clienteum@grano.com', 'Cliente 1', '$2y$10$VBgngy9KAVb3wZC.EbinY.FRY69iSYSsweyl2F1TPBj2asFoVAbW.', 'Rua Cliente', '32413144114124', '2025-10-29 21:12:29');
+(3, 'cliente um', 'clienteum@grano.com', 'Cliente 1', '$2y$10$yalkpsG748uEElg4FguarOcdg0WzCAgImXyoOUvlIJ0Vlmu8A3YVa', 'Rua Cliente', '324131441', '2025-10-29 21:12:29'),
+(4, 'cliente dois', 'clientedois@grano.com', 'cliente dois', '$2y$10$uGVFtPwMYDar/Vrf63OePevH2jCFpV52qbpo33XTbeJWShuZboSp.', 'Rua Cliente', '1241241214214', '2025-11-01 20:33:59');
 
 -- --------------------------------------------------------
 
@@ -58,7 +59,7 @@ CREATE TABLE `funcionarios` (
   `senha` varchar(225) NOT NULL,
   `nome_completo` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `funcao` enum('gerente','funcionario','repositor','') NOT NULL
+  `funcao` enum('gerente','funcionario','repositor','entregador') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -71,7 +72,8 @@ INSERT INTO `funcionarios` (`idFunc`, `usuario`, `senha`, `nome_completo`, `emai
 (5, 'gerente1', '$2y$10$Te4IhAgtlU/KkblWPR1VGOvg2vZMclBRuSI16CqI.0QmmO4s7vPiy', 'Gerente 1', 'gerente1@gmail.com', 'gerente'),
 (6, 'funcionario1', '$2y$10$2XIzQ9Vwe1jQqGXFCvx.i.TrYneie1fQhssxMvlJYBxOXm0/0Vw8W', 'Funcionario 1', 'funcionario1@gmail.com', 'funcionario'),
 (7, 'repositor2', '$2y$10$UZ6G9OwqzLICb9JEjoFove2/pnSTkiSLhMc3lY.DtyLKw5KyaKoCS', 'Repositor 2', 'repositor2@gmail.com', 'repositor'),
-(8, 'gerente2', '$2y$10$TOPsrXMD5kJ3UmKKVJgFcOlZysmYz0sXY0ws99JCU47mW0iJyxTAW', 'Gerente 2', 'gerente2@gmail.com', 'gerente');
+(8, 'gerente2', '$2y$10$TOPsrXMD5kJ3UmKKVJgFcOlZysmYz0sXY0ws99JCU47mW0iJyxTAW', 'Gerente 2', 'gerente2@gmail.com', 'gerente'),
+(9, 'entregador1', '$2y$10$ikYeYd3wQr0eiOIZ.o1NwewlK3KXQ2cBED2JyV.u8Hx/ilFVXvEyq', 'Entregador 1', 'entregador1@grano.com', 'entregador');
 
 -- --------------------------------------------------------
 
@@ -94,8 +96,41 @@ CREATE TABLE `itens_pedido` (
 INSERT INTO `itens_pedido` (`idItem`, `idPedido`, `idProd`, `quantidade`, `preco_unitario`) VALUES
 (1, 3, 43, 3, 5.00),
 (2, 3, 45, 1, 9.90),
-(3, 4, 1, 1, 10.00),
-(4, 5, 1, 1, 10.00);
+(5, 6, 45, 1, 9.90),
+(6, 7, 1, 3, 10.00),
+(7, 7, 44, 1, 0.80),
+(8, 7, 55, 1, 5.00);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `log_pedidos`
+--
+
+CREATE TABLE `log_pedidos` (
+  `idLog` int(11) NOT NULL,
+  `idPedido` int(11) NOT NULL,
+  `idFunc` int(11) NOT NULL,
+  `acao` varchar(255) NOT NULL,
+  `data_log` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `log_pedidos`
+--
+
+INSERT INTO `log_pedidos` (`idLog`, `idPedido`, `idFunc`, `acao`, `data_log`) VALUES
+(1, 7, 5, 'Alterou status do pedido para \'Em processo\'', '2025-11-01 19:44:15'),
+(2, 7, 5, 'Alterou status do pedido para \'Pendente\'', '2025-11-01 19:44:18'),
+(3, 7, 5, 'Alterou status do pedido para \'Pendente\'', '2025-11-01 19:44:18'),
+(4, 7, 5, 'Alterou status do pedido para \'Pendente\'', '2025-11-01 19:48:35'),
+(5, 3, 5, 'Alterou status do pedido para \'Em processo\'', '2025-11-01 19:48:41'),
+(6, 3, 5, 'Alterou status do pedido para \'Entregue\'', '2025-11-01 19:48:44'),
+(7, 5, 5, 'Excluiu o pedido #5', '2025-11-01 19:49:00'),
+(8, 5, 5, 'Excluiu o pedido #5', '2025-11-01 19:49:03'),
+(9, 5, 5, 'Excluiu o pedido #5', '2025-11-01 19:50:31'),
+(10, 7, 5, 'Adicionou o produto #55 (qtd 1) ao pedido', '2025-11-01 19:50:54'),
+(11, 4, 5, 'Excluiu o pedido #4', '2025-11-01 20:04:31');
 
 -- --------------------------------------------------------
 
@@ -107,7 +142,7 @@ CREATE TABLE `pedidos` (
   `idPedido` int(11) NOT NULL,
   `idCli` int(11) NOT NULL,
   `data_pedido` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` enum('Pendente','Em preparação','Saiu para entrega','Concluído') DEFAULT 'Pendente',
+  `status` varchar(50) DEFAULT NULL,
   `total` decimal(10,2) DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -116,9 +151,9 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`idPedido`, `idCli`, `data_pedido`, `status`, `total`) VALUES
-(3, 3, '2025-10-29 03:00:00', 'Pendente', 0.00),
-(4, 3, '2025-10-29 03:00:00', 'Pendente', 0.00),
-(5, 3, '2025-10-29 03:00:00', 'Pendente', 0.00);
+(3, 3, '2025-10-29 03:00:00', 'Entregue', 0.00),
+(6, 3, '2025-11-01 23:51:42', 'Entregue', 0.00),
+(7, 4, '2025-11-02 00:46:47', 'Pendente', 0.00);
 
 -- --------------------------------------------------------
 
@@ -140,10 +175,10 @@ CREATE TABLE `produtos` (
 --
 
 INSERT INTO `produtos` (`idProd`, `nome`, `categoria`, `preco`, `quantidade`, `fotos`) VALUES
-(1, 'Brioche', 'Pães Doces', 10.00, 20, 'imagens/brioche.jpg'),
+(1, 'Brioche', 'Pães Doces', 10.00, 17, 'imagens/brioche.jpg'),
 (43, 'Donuts', 'Doces', 5.00, 7, 'imagens/68b18ebe8abeb.jpg'),
-(44, 'Pão Francês', 'Pães', 0.80, 500, 'imagens/68d004f4e6bc6.jpg'),
-(45, 'Pão de Forma Integral', 'Pães', 9.90, 39, 'imagens/68d007222c3dd.jpg'),
+(44, 'Pão Francês', 'Pães', 0.80, 499, 'imagens/68d004f4e6bc6.jpg'),
+(45, 'Pão de Forma Integral', 'Pães', 9.90, 38, 'imagens/68d007222c3dd.jpg'),
 (46, 'Pão de Batata com Recheio de Catupiry', 'Pães', 5.50, 60, 'imagens/68d00749c441a.jpg'),
 (47, 'Baguete Tradicional', 'Pães', 7.00, 35, 'imagens/68d0076373c68.jpg'),
 (48, 'Pão Doce com Coco', 'Pães Doces', 3.50, 70, 'imagens/68d0077f845a6.jpg'),
@@ -190,6 +225,12 @@ ALTER TABLE `itens_pedido`
   ADD KEY `idProd` (`idProd`);
 
 --
+-- Índices de tabela `log_pedidos`
+--
+ALTER TABLE `log_pedidos`
+  ADD PRIMARY KEY (`idLog`);
+
+--
 -- Índices de tabela `pedidos`
 --
 ALTER TABLE `pedidos`
@@ -210,31 +251,37 @@ ALTER TABLE `produtos`
 -- AUTO_INCREMENT de tabela `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `idCli` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idCli` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `funcionarios`
 --
 ALTER TABLE `funcionarios`
-  MODIFY `idFunc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `idFunc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de tabela `itens_pedido`
 --
 ALTER TABLE `itens_pedido`
-  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de tabela `log_pedidos`
+--
+ALTER TABLE `log_pedidos`
+  MODIFY `idLog` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idPedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `idProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `idProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- Restrições para tabelas despejadas
