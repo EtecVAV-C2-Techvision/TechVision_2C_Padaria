@@ -1,44 +1,55 @@
 <?php
-session_start();
+include('proteger_cliente.php');
 include('../conexao.php');
 
-// Verifica se o cliente está logado
-if (!isset($_SESSION['cliente'])) {
-    header("Location: login_cliente.php");
-    exit;
-}
-
-// Se ainda não existir um carrinho, cria um
-if (!isset($_SESSION['carrinho'])) {
+if (!isset($_SESSION['carrinho']) || !is_array($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 
-// Se o usuário enviou um produto via POST (vindo da página de compras)
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idProd'])) {
-    $idProd = $_POST['idProd'];
-    $quantidade = $_POST['quantidade'];
+    $idProd = (int) $_POST['idProd'];
+    $quantidade = (int) $_POST['quantidade'];
 
-    // Se o produto já estiver no carrinho, soma a quantidade
-    if (isset($_SESSION['carrinho'][$idProd])) {
-        $_SESSION['carrinho'][$idProd] += $quantidade;
-    } else {
-        $_SESSION['carrinho'][$idProd] = $quantidade;
+    if ($quantidade <= 0) {
+        header("Location: carrinho.php");
+        exit;
     }
 
-    // Redireciona de volta para evitar reenvio do formulário
+    $stmt = $conn->prepare("SELECT quantidade FROM produtos WHERE idProd = ?");
+    $stmt->bind_param("i", $idProd);
+    $stmt->execute();
+    $res = $stmt->get_result();
+    $produto = $res->fetch_assoc();
+
+    if (!$produto) {
+        header("Location: carrinho.php");
+        exit;
+    }
+
+    // verifica estoque
+    $estoqueDisponivel = (int)$produto['quantidade'];
+    $quantidadeAtualNoCarrinho = isset($_SESSION['carrinho'][$idProd]) ? (int)$_SESSION['carrinho'][$idProd] : 0;
+    $novaQuantidade = $quantidadeAtualNoCarrinho + $quantidade;
+
+    if ($novaQuantidade > $estoqueDisponivel) {
+        $_SESSION['carrinho'][$idProd] = $estoqueDisponivel;
+    } else {
+        $_SESSION['carrinho'][$idProd] = $novaQuantidade;
+    }
+
     header("Location: carrinho.php");
     exit;
 }
 
-// Remover item do carrinho
 if (isset($_GET['remover'])) {
-    $idRemover = $_GET['remover'];
-    unset($_SESSION['carrinho'][$idRemover]);
+    $idRemover = (int) $_GET['remover'];
+    if (isset($_SESSION['carrinho'][$idRemover])) {
+        unset($_SESSION['carrinho'][$idRemover]);
+    }
     header("Location: carrinho.php");
     exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -63,21 +74,36 @@ if (empty($_SESSION['carrinho'])) {
 
     $totalGeral = 0;
 
+    $stmt_prod = $conn->prepare("SELECT nome, preco, fotos FROM produtos WHERE idProd = ?");
+
     foreach ($_SESSION['carrinho'] as $idProd => $qtd) {
-        $sql = "SELECT * FROM produtos WHERE idProd = $idProd";
-        $res = $conn->query($sql);
+        $idProd = (int)$idProd;
+        $qtd = (int)$qtd;
+        if ($qtd <= 0) continue;
+
+        $stmt_prod->bind_param("i", $idProd);
+        $stmt_prod->execute();
+        $res = $stmt_prod->get_result();
         $p = $res->fetch_assoc();
 
-        $subtotal = $p['preco'] * $qtd;
+        if (!$p) {
+            unset($_SESSION['carrinho'][$idProd]);
+            continue;
+        }
+
+        $nome = htmlspecialchars($p['nome']);
+        $preco = (float)$p['preco'];
+        $subtotal = $preco * $qtd;
         $totalGeral += $subtotal;
 
+
         echo "<tr>";
-        echo "<td>{$p['nome']}</td>";
+        echo "<td>{$nome}</td>";
         echo "<td><img src='../{$p['fotos']}' width='80'></td>";
-        echo "<td>R$ " . number_format($p['preco'], 2, ',', '.') . "</td>";
+        echo "<td>R$ " . number_format($preco, 2, ',', '.') . "</td>";
         echo "<td>{$qtd}</td>";
         echo "<td>R$ " . number_format($subtotal, 2, ',', '.') . "</td>";
-        echo "<td><a href='?remover=$idProd' class='btn'>Remover</a></td>";
+        echo "<td><a href='?remover={$idProd}' class='btn'>Remover</a></td>";
         echo "</tr>";
     }
 

@@ -1,12 +1,7 @@
 <?php
-session_start();
-include('../conexao.php');
+include('proteger_cliente.php');
+include('../conexao.php'); // ajuste caminho se necessário
 
-// Verifica se o usuário está logado
-if (!isset($_SESSION['cliente'])) {
-    header("Location: login_cliente.php");
-    exit;
-}
 
 // Verifica se o carrinho não está vazio
 if (empty($_SESSION['carrinho'])) {
@@ -15,7 +10,7 @@ if (empty($_SESSION['carrinho'])) {
 }
 
 $idCli = $_SESSION['cliente']['idCli'];
-$data = date("Y-m-d");
+$data = date("Y-m-d H:i:s");
 
 // Cria o pedido
 $sql = "INSERT INTO pedidos (idCli, data_pedido) VALUES (?, ?)";

@@ -2,7 +2,6 @@
 session_start();
 include('../conexao.php');
 
-// Se o cliente já estiver logado, redireciona
 if (isset($_SESSION['cliente'])) {
     header("Location: compras.php");
     exit;

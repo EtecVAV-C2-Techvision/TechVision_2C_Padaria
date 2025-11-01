@@ -1,14 +1,15 @@
 <?php
-session_start();
+include('proteger_cliente.php');
 include('../conexao.php');
 
-// se o cliente não estiver logado, volta para o login
-if (!isset($_SESSION['cliente'])) {
-    header("Location: login_cliente.php");
-    exit;
+if (isset($_SESSION['cliente'])) {
+    $perfilLink = 'perfil_cliente.php';
+} else {
+    $perfilLink = 'login_cliente.php';
 }
 
-include('proteger_cliente.php');
+
+
 
 $result = $conn->query("SELECT * FROM produtos WHERE quantidade > 0");
 ?>
@@ -16,10 +17,37 @@ $result = $conn->query("SELECT * FROM produtos WHERE quantidade > 0");
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+<style>
+    .btn-perfil {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+}
+
+.btn-perfil a {
+  background-color: #ff914d;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  transition: 0.2s;
+}
+
+.btn-perfil a:hover {
+  background-color: #ff7a20;
+}
+
+</style>
 <meta charset="UTF-8">
 <title>Compras</title>
 </head>
 <body>
+    <div class="btn-perfil">
+  <a href="<?= $perfilLink ?>">Meu Perfil</a>
+</div>
 <h2>Produtos disponíveis</h2>
 
 <p>Bem-vindo(a), <strong><?php echo $_SESSION['cliente']['nome']; ?></strong>!</p>

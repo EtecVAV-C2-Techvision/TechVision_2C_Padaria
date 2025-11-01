@@ -30,10 +30,9 @@
             <a href="#testimonials">Avaliações</a>
         </li>
       </ul>
-    <button class="btn-default">
-     Conheça-nos
-    </button>
-
+      <button class="btn-default"> <a href='clientes/compras.php'>
+     Compras
+    </a></button>
     <button id="mobile_btn">
       <i class="fa-solid fa-bars"> </i>
     </button>
@@ -52,9 +51,9 @@
             <a href="#testimonials ">Avaliações</a>
         </li>
       </ul>
-      <button class="btn-default">
-     Conheça-nos
-    </button>
+      <button class="btn-default"> <a href='clientes/compras.php'>
+     Compras
+    </a></button>
     </div>
 
   </header>
@@ -138,11 +137,10 @@
                         <i class="fa-solid fa-star"></i>
                         <span>(500+)</span>
                     </div>
-
                     <div class="dish-price">
-                        <button class="btn-default">
+                        <a href='clientes/compras.php'><button class="btn-default">
                             <i class="fa-solid fa-basket-shopping"></i>
-                        </button>
+                        </button></a>
                     </div>
                 </div>
 
@@ -169,11 +167,10 @@
                         <i class="fa-solid fa-star"></i>
                         <span>(500+)</span>
                     </div>
-
                     <div class="dish-price">
-                        <button class="btn-default">
+                        <a href='clientes/compras.php'><button class="btn-default">
                             <i class="fa-solid fa-basket-shopping"></i>
-                        </button>
+                        </button></a>
                     </div>
                 </div>
 
@@ -200,11 +197,10 @@
                         <i class="fa-solid fa-star"></i>
                         <span>(500+)</span>
                     </div>
-
                     <div class="dish-price">
-                        <button class="btn-default">
+                        <a href='clientes/compras.php'><button class="btn-default">
                             <i class="fa-solid fa-basket-shopping"></i>
-                        </button>
+                        </button></a>
                     </div>
                 </div>
 
@@ -233,9 +229,9 @@
                     </div>
 
                     <div class="dish-price">
-                        <button class="btn-default">
+                        <a href='clientes/compras.php'><button class="btn-default">
                             <i class="fa-solid fa-basket-shopping"></i>
-                        </button>
+                        </button></a>
                     </div>
                 </div>
             </div>
@@ -330,17 +326,6 @@
     </footer>
   
   <script src="src/javascript/script.js"></script>
-
-
-
-
-    <a href='clientes/compras.php'>Compras</a><br>
-
-
-
-
-
-
 
 </body>
 </html>
