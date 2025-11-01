@@ -36,85 +36,8 @@ $result = $conn->query("SELECT * FROM produtos ORDER BY $ordenarPor");
 <head>
     <meta charset="UTF-8">
     <title>Lista de Produtos</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fff9ef;
-            margin: 20px;
-        }
+    <link rel="stylesheet" href="estetica.css">
 
-        a {
-            text-decoration: none;
-            font-weight: 500;
-            color: #f4a300;
-            margin-right: 15px;
-            transition: 0.3s;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        h2 {
-            color: #222;
-            margin: 20px 0;
-        }
-
-        .links {
-            margin-bottom: 20px;
-        }
-
-        .ordenacao {
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fffdfa;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            vertical-align: middle;
-        }
-
-        th {
-            background: #f4a300;
-            color: white;
-            font-weight: bold;
-        }
-
-        tr:nth-child(even) {
-            background: #fdf4de;
-        }
-
-        tr:hover {
-            background: #fff2c6;
-        }
-
-        td {
-            color: #333;
-        }
-
-        .produto-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .produto-info img {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
-    </style>
 </head>
 <body>
 

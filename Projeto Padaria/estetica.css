@@ -1,0 +1,269 @@
+/* =================== */
+/* ESTILOS GLOBAIS */
+/* =================== */
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff9ef;
+    margin: 20px;
+}
+
+h2 {
+    color: #222;
+    margin: 20px 0;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 500;
+    color: #f4a300;
+    transition: 0.3s;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Links específicos de "voltar" ou menu */
+a.voltar {
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+/* =================== */
+/* FORMULÁRIOS GERAIS */
+/* =================== */
+
+form {
+    background: #fffdfa;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+input,
+select,
+button,
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    margin-top: 12px;
+}
+
+/* Botões gerais */
+button,
+input[type="submit"] {
+    background-color: #f4a300;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 10px;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #d18e00;
+}
+
+small,
+p.msg {
+    color: gray;
+    font-size: 13px;
+    margin-top: 8px;
+}
+
+/* =================== */
+/* TABELAS */
+/* =================== */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fffdfa;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background: #f4a300;
+    color: white;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background: #fdf4de;
+}
+
+tr:hover {
+    background: #fff2c6;
+}
+
+td {
+    color: #333;
+}
+
+/* Botões dentro de tabelas */
+td a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 8px;
+    background-color: #f4a300;
+    color: white;
+    font-weight: 500;
+    margin-right: 5px;
+    transition: 0.3s;
+}
+
+td a:hover {
+    background-color: #d18e00;
+}
+
+td a.delete {
+    background-color: #e74c3c;
+}
+
+td a.delete:hover {
+    background-color: #c0392b;
+}
+
+/* Imagens da listagem de produtos */
+.produto-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.produto-info img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* =================== */
+/* DASHBOARD */
+/* =================== */
+
+.welcome {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 300px;
+}
+
+.buttons a {
+    display: inline-block;
+    text-align: center;
+    padding: 12px 15px;
+    background-color: #f4a300;
+    color: white;
+    font-weight: 500;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.buttons a:hover {
+    background-color: #d18e00;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+/* =================== */
+/* LOGIN (exclusivo) */
+/* =================== */
+
+.login-body {
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(#fff9ef, #fff3da);
+}
+
+.login-container {
+    width: 380px;
+    background: #fffdfa;
+    padding: 2.5rem;
+    border-radius: 18px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.login-container h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 1.8rem;
+}
+
+.login-container label {
+    display: block;
+    margin: 12px 0 6px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 12px;
+    border: 1.5px solid #e5e5e5;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #fff;
+    outline: none;
+    transition: 0.25s;
+}
+
+.login-container input:focus {
+    border-color: #f4a300;
+    box-shadow: 0 0 6px rgba(244,163,0,0.35);
+}
+
+.login-container button {
+    width: 100%;
+    margin-top: 22px;
+    padding: 13px;
+    background: #f4a300;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(244,163,0,0.35);
+}
+
+.login-container button:hover {
+    background: #d88d00;
+}

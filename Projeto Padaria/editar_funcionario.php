@@ -51,67 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Editar Funcionário</title>
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #fff9ef;
-            margin: 20px;
-        }
+        <link rel="stylesheet" href="estetica.css">
 
-        a.voltar {
-            text-decoration: none;
-            font-weight: 500;
-            color: #f4a300;
-            display: inline-block;
-            margin-bottom: 15px;
-            transition: 0.3s;
-        }
-
-        a.voltar:hover {
-            text-decoration: underline;
-        }
-
-        h2 {
-            color: #222;
-            margin-bottom: 20px;
-        }
-
-        form {
-            background: #fffdfa;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            width: 350px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        input, select, button {
-            margin-top: 12px;
-            padding: 10px;
-            font-size: 14px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #f4a300;
-            color: white;
-            border: none;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background-color: #d18e00;
-        }
-
-        .msg {
-            margin-top: 10px;
-        }
-    </style>
 </head>
 <body>
 

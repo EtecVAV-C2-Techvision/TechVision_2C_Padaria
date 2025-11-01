@@ -330,5 +330,17 @@
     </footer>
   
   <script src="src/javascript/script.js"></script>
+
+
+
+
+    <a href='clientes/compras.php'>Compras</a><br>
+
+
+
+
+
+
+
 </body>
 </html>
