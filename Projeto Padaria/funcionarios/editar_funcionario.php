@@ -5,7 +5,7 @@ if (trim(strtolower($_SESSION['funcao'])) !== 'gerente') {
     die("Acesso negado.");
 }
 
-include "conexao.php";
+include('../conexao.php');
 
 $id = intval($_GET['id'] ?? 0);
 

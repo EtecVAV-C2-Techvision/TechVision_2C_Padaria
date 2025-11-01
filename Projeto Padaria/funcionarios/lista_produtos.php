@@ -1,6 +1,6 @@
 <?php
 include "proteger.php";
-include "conexao.php";
+include('../conexao.php');
 
 // Ordenação padrão
 $ordenarPor = "idProd ASC";
@@ -10,21 +10,11 @@ if (isset($_GET['sort'])) {
     $ordem = (isset($_GET['order']) && $_GET['order'] == 'desc') ? "DESC" : "ASC";
 
     switch ($_GET['sort']) {
-        case "id":
-            $ordenarPor = "idProd $ordem";
-            break;
-        case "categoria":
-            $ordenarPor = "categoria $ordem";
-            break;
-        case "nome":
-            $ordenarPor = "nome $ordem";
-            break;
-        case "preco":
-            $ordenarPor = "preco $ordem";
-            break;
-        case "quantidade":
-            $ordenarPor = "quantidade $ordem";
-            break;
+        case "id": $ordenarPor = "idProd $ordem"; break;
+        case "categoria": $ordenarPor = "categoria $ordem"; break;
+        case "nome": $ordenarPor = "nome $ordem"; break;
+        case "preco": $ordenarPor = "preco $ordem"; break;
+        case "quantidade": $ordenarPor = "quantidade $ordem"; break;
     }
 }
 
@@ -37,7 +27,6 @@ $result = $conn->query("SELECT * FROM produtos ORDER BY $ordenarPor");
     <meta charset="UTF-8">
     <title>Lista de Produtos</title>
     <link rel="stylesheet" href="estetica.css">
-
 </head>
 <body>
 
@@ -77,16 +66,18 @@ $result = $conn->query("SELECT * FROM produtos ORDER BY $ordenarPor");
         <tr>
             <td><?= $row['idProd'] ?></td>
             <td>
-            <div class="produto-info">
-                <?php if (!empty($row['fotos'])): ?>
-                    <img src="<?= $row['fotos'] ?>" alt="<?= $row['nome'] ?>">
-                <?php else: ?>
-                    <img src="imagens/default.png" alt="Sem foto">
-                <?php endif; ?>
-                <span><?= $row['nome'] ?></span>
-            </div>
+                <div class="produto-info">
+                    <?php 
+                    $caminhoImagem = "../" . $row['fotos'];
+                    if (!empty($row['fotos']) && file_exists(__DIR__ . "/../" . $row['fotos'])): ?>
+                        <img src="<?= $caminhoImagem ?>" alt="<?= htmlspecialchars($row['nome']) ?>">
+                    <?php else: ?>
+                        <img src="../imagens/default.png" alt="Sem foto">
+                    <?php endif; ?>
+                    <span><?= htmlspecialchars($row['nome']) ?></span>
+                </div>
             </td>
-            <td><?= $row['categoria'] ?></td>
+            <td><?= htmlspecialchars($row['categoria']) ?></td>
             <td>R$ <?= number_format($row['preco'], 2, ',', '.') ?></td>
             <td><?= $row['quantidade'] ?></td>
         </tr>

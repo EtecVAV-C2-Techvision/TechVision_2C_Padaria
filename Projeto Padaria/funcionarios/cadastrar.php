@@ -3,10 +3,9 @@ include "proteger.php";
 if ($_SESSION['funcao'] != 'gerente') {
     die("Acesso negado.");
 }
-?>
 
-<?php
-include "conexao.php";
+include('../conexao.php');
+
 
 function validarSenha($senha) {
     return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,16}$/', $senha);
@@ -59,6 +58,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <option value="gerente">Gerente</option>
             <option value="funcionario">Funcionário</option>
             <option value="repositor">Repositor</option>
+            <option value="entregador">Entregador</option>
+
         </select>
         <button type="submit">Cadastrar</button>
         <p>A senha deve ter entre 8 e 16 caracteres, com letras maiúsculas, minúsculas e números.</p>

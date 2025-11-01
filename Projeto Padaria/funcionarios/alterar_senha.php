@@ -1,6 +1,6 @@
 <?php
 include "proteger.php";
-include "conexao.php";
+include('../conexao.php');
 
 $msg = "";
 

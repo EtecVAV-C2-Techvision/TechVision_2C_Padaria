@@ -5,7 +5,7 @@ if (trim(strtolower($_SESSION['funcao'])) !== 'gerente') {
     die("Acesso negado.");
 }
 
-include "conexao.php";
+include('../conexao.php');
 
 $sql = "SELECT idFunc, usuario, nome_completo, email, funcao FROM funcionarios WHERE funcao <> 'gerente'";
 $result = $conn->query($sql);

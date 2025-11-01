@@ -1,6 +1,6 @@
 <?php
 include "proteger.php";
-include "conexao.php";
+include('../conexao.php');
 
 if ($_SESSION['funcao'] != 'gerente') {
     exit("Acesso negado.");
@@ -24,22 +24,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!in_array($extensao, $extensoesPermitidas)) {
             $result_msg = "<p style='color:red;'>Erro: a imagem deve estar nos formatos JPG, JPEG, PNG ou GIF.</p>";
         } else {
-            $pasta = "imagens/";
+            // Caminho físico (no servidor)
+            $pasta = __DIR__ . "/../imagens/";
             if (!is_dir($pasta)) mkdir($pasta, 0777, true);
 
-            // Gera nome único com a extensão correta
+            // Nome único para evitar conflitos
             $nomeArquivo = uniqid() . "." . $extensao;
-            $caminho = $pasta . $nomeArquivo;
+            $caminhoFisico = $pasta . $nomeArquivo;
 
-            if (move_uploaded_file($_FILES['foto']['tmp_name'], $caminho)) {
+            // Caminho relativo (para uso no site)
+            $caminhoRelativo = "imagens/" . $nomeArquivo;
+
+            if (move_uploaded_file($_FILES['foto']['tmp_name'], $caminhoFisico)) {
                 $stmt = $conn->prepare("INSERT INTO produtos (nome, categoria, preco, quantidade, fotos) VALUES (?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssdis", $nome, $categoria, $preco, $quantidade, $caminho);
+                $stmt->bind_param("ssdis", $nome, $categoria, $preco, $quantidade, $caminhoRelativo);
                 $stmt->execute();
                 $result_msg = "<p style='color:green;'>Produto cadastrado com sucesso com imagem!</p>";
             } else {
                 $result_msg = "<p style='color:red;'>Erro ao salvar a imagem.</p>";
             }
         }
+    } else {
+        // Caso não envie imagem, cadastrar mesmo assim
+        $stmt = $conn->prepare("INSERT INTO produtos (nome, categoria, preco, quantidade) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssdi", $nome, $categoria, $preco, $quantidade);
+        $stmt->execute();
+        $result_msg = "<p style='color:green;'>Produto cadastrado com sucesso sem imagem!</p>";
     }
 }
 ?>
@@ -50,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Cadastrar Produtos</title>
     <link rel="stylesheet" href="estetica.css">
-
 </head>
 <body>
 
