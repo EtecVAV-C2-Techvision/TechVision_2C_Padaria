@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 01/11/2025 às 16:15
+-- Tempo de geração: 01/11/2025 às 16:21
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -161,8 +161,7 @@ INSERT INTO `produtos` (`idProd`, `nome`, `categoria`, `preco`, `quantidade`, `f
 (60, 'Café com Leite (médio)', 'Bebidas', 5.50, 150, 'imagens/68d00a1b30216.jpg'),
 (61, 'Suco Natural de Laranja (300ml)', 'Bebidas', 6.60, 80, 'imagens/68d00a4242891.jpeg'),
 (62, 'Capuccino (médio)', 'Bebidas', 7.50, 60, 'imagens/68d00a5e5da27.jpg'),
-(63, 'Chá Gelado de Pêssego (500ml)', 'Bebidas', 5.50, 40, 'imagens/68d00a7d14c66.jpg'),
-(64, 'Croissant de Queijo', 'Salgados', 8.00, 30, 'imagens/68d01092b813d.jpg');
+(63, 'Chá Gelado de Pêssego (500ml)', 'Bebidas', 5.50, 40, 'imagens/68d00a7d14c66.jpg');
 
 --
 -- Índices para tabelas despejadas
