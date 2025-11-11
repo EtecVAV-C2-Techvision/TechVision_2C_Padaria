@@ -31,20 +31,11 @@ $method = $_SERVER['REQUEST_METHOD'];
 var_dump($method);
 
 include_once "classes/db.class.php";
+include_once "classes/jwt.class.php";
+include_once "classes/usuarios.class.php";
+
 include_once "api/clientes/clientes.php";
+include_once "api/usuarios/usuarios.php";
 
-
-/*$GLOBALS['secretJWT'] = '123456';
-
-include_once "classes/autoload.class.php";
-new Autoload();
-
-$rota = new Rotas();
-$rota->add('POST', '/usuarios/login', 'Usuarios::login', false);
-$rota->add('GET', '/clientes/listar', 'Clientes::listarTodos', true);
-$rota->add('GET', '/clientes/listar/[PARAM]', 'Clientes::listarUnico', true);
-$rota->add('POST', '/clientes/adicionar', 'Clientes::adicionar', true);
-$rota->add('PUT', '/clientes/atualizar/[PARAM]', 'Clientes::atualizar', true);
-$rota->ir($_GET['path']);*/
 
 ?>
