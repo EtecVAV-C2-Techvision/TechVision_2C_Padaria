@@ -52,25 +52,140 @@ $status = $pedido['status'] ?: 'Pendente';
 <head>
 <meta charset="UTF-8">
 <title>Itens do Pedido #<?= $idPedido ?></title>
+
 <style>
-  body{font-family:Arial,Helvetica,sans-serif;background:#fff9ef;margin:20px;}
-  h2{color:#222;}
-  table{width:100%;border-collapse:collapse;background:#fff;margin-top:18px;}
-  th,td{padding:10px;border:1px solid #ddd;text-align:center;}
-  img{border-radius:6px;}
-  a.btn, button.btn{padding:8px 12px;background:#ccc;color:#000;border-radius:6px;text-decoration:none;cursor:pointer;border:none;}
-  button.pagar{background:#28a745;color:white;}
-  .total{font-weight:bold;font-size:1.1em;text-align:right;margin-top:10px;}
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #fff7e0;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    p {
+        text-align: center;
+        color: #444;
+        font-size: 16px;
+    }
+
+    /* TABELA */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        margin-top: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    th {
+        background: #ffcb45;
+        padding: 14px;
+        color: #333;
+        font-weight: bold;
+        border-bottom: 3px solid #f8d447;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #f2e5b3;
+        text-align: center;
+        color: #444;
+        font-size: 15px;
+    }
+
+    tr:hover td {
+        background: #fff3c2;
+        transition: 0.2s;
+    }
+
+    img {
+        border-radius: 8px;
+        border: 2px solid #f8d447;
+    }
+
+    /* BOTÕES */
+    .btn {
+        display: inline-block;
+        background: #ffcb45;
+        padding: 10px 16px;
+        border-radius: 8px;
+        color: #333;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.2s;
+        border: 2px solid #f8d447;
+        margin: 5px;
+    }
+
+    .btn:hover {
+        background: #f8d447;
+    }
+
+    /* BOTÃO PAGAR */
+    .pagar {
+        background: #28a745;
+        border: none;
+        color: #fff;
+        font-weight: bold;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: .2s;
+        width: 220px;
+        font-size: 16px;
+    }
+
+    .pagar:hover {
+        background: #218838;
+    }
+
+    .total {
+        text-align: right;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 15px;
+        color: #333;
+    }
+
+    .status-ok {
+        color: green;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 12px;
+    }
+
+    .btns-footer {
+        text-align: center;
+        margin-top: 20px;
+    }
 </style>
+
 </head>
 <body>
 
 <h2>📦 Pedido #<?= $idPedido ?></h2>
-<p><strong>Data:</strong> <?= htmlspecialchars($pedido['data_pedido']) ?>  
- | <strong>Status:</strong> <?= htmlspecialchars($status) ?></p>
+
+<p>
+    <strong>Data:</strong> <?= htmlspecialchars($pedido['data_pedido']) ?>  
+    | <strong>Status:</strong> <?= htmlspecialchars($status) ?>
+</p>
 
 <table>
-  <tr><th>Produto</th><th>Imagem</th><th>Preço (R$)</th><th>Qtd</th><th>Subtotal (R$)</th></tr>
+  <tr>
+    <th>Produto</th>
+    <th>Imagem</th>
+    <th>Preço (R$)</th>
+    <th>Qtd</th>
+    <th>Subtotal (R$)</th>
+  </tr>
+
   <?php while ($item = $itens->fetch_assoc()): 
         $subtotal = $item['preco_unitario'] * $item['quantidade'];
         $total += $subtotal;
@@ -85,20 +200,23 @@ $status = $pedido['status'] ?: 'Pendente';
   <?php endwhile; ?>
 </table>
 
-<p class="total">💰 <strong>Total do Pedido:</strong> R$ <?= number_format($total, 2, ',', '.') ?></p>
+<p class="total">💰 Total do Pedido: R$ <?= number_format($total, 2, ',', '.') ?></p>
 
 <?php if ($status == 'Pendente'): ?>
-<form method="post" style="margin-top:15px;">
-  <button type="submit" name="pagar" class="btn pagar">💳 Pagar Pedido</button>
-</form>
+    <form method="post" style="text-align:center; margin-top:20px;">
+        <button type="submit" name="pagar" class="pagar">💳 Pagar Pedido</button>
+    </form>
 <?php else: ?>
-  <p style="color:green;font-weight:bold;">✅ Pedido já pago e em processo!</p>
+    <p class="status-ok">✅ Pedido já pago e em processo!</p>
 <?php endif; ?>
 
-<br>
-<a class="btn" href="perfil_cliente.php">⬅ Voltar ao Perfil</a>
-<a class="btn" href="compras.php">🛒 Continuar Comprando</a>
-<a class="btn" href="../index.php">🏠 Início</a>
+<div class="btns-footer">
+    <a class="btn" href="perfil_cliente.php">⬅ Voltar ao Perfil</a>
+    <a class="btn" href="compras.php">🛒 Continuar Comprando</a>
+    <a class="btn" href="../index.php">🏠 Início</a>
+</div>
 
 </body>
+</html>
+
 </html>

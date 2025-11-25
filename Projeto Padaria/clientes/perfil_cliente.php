@@ -39,56 +39,194 @@ $pedidos = mysqli_query($conn, "SELECT * FROM pedidos WHERE idCli=$idCli ORDER B
 <head>
 <meta charset="UTF-8">
 <title>Perfil do Cliente</title>
+
 <style>
-body{font-family:Arial;background:#fff9ef;margin:20px}
-table{width:100%;border-collapse:collapse;background:#fff}
-th,td{padding:10px;border:1px solid #ccc;text-align:center}
-input{margin:5px;padding:8px;width:300px}
-button{padding:8px 12px;background:#ff914d;color:#fff;border:none;border-radius:5px;cursor:pointer}
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #fff7e0;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    /* CONTAINER DO FORMULÁRIO */
+    .perfil-box {
+        max-width: 600px;
+        margin: 20px auto 40px auto;
+        background: #ffffff;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        border-top: 8px solid #ffcb45;
+    }
+
+    label {
+        font-weight: bold;
+        color: #444;
+        display: block;
+        margin-top: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 4px;
+        border-radius: 6px;
+        border: 2px solid #f0e3b0;
+        background: #fffef8;
+        font-size: 15px;
+        transition: .2s;
+    }
+
+    input:focus {
+        border-color: #ffcb45;
+        box-shadow: 0 0 4px rgba(255,203,69,0.5);
+    }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        margin-top: 20px;
+        background: #ffcb45;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        border: 2px solid #f8d447;
+        cursor: pointer;
+        transition: .2s;
+        color: #333;
+    }
+
+    button:hover {
+        background: #f8d447;
+    }
+
+    /* TABELA DE PEDIDOS */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 25px;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    th {
+        background: #ffcb45;
+        color: #333;
+        font-weight: bold;
+        padding: 12px;
+        border-bottom: 3px solid #f8d447;
+    }
+
+    td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: 1px solid #f2e5b3;
+        color: #444;
+        font-size: 15px;
+    }
+
+    tr:hover td {
+        background: #fff3c2;
+    }
+
+    .btn {
+        display: inline-block;
+        background: #ffcb45;
+        padding: 10px 16px;
+        border-radius: 8px;
+        color: #333;
+        font-weight: bold;
+        text-decoration: none;
+        transition: 0.2s;
+        border: 2px solid #f8d447;
+        margin: 8px 5px;
+    }
+
+    .btn:hover {
+        background: #f8d447;
+    }
+
+    .links-center {
+        text-align: center;
+        margin-top: 25px;
+    }
 </style>
+
 </head>
 <body>
 
 <h2>👤 Meu Perfil</h2>
 
+<div class="perfil-box">
 <form method="post">
-    <label>Nome completo:</label><br>
-    <input type="text" name="nome_completo" value="<?php echo htmlspecialchars($cliente['nome_completo']); ?>"><br>
 
-    <label>Email:</label><br>
-    <input type="email" name="email" value="<?php echo htmlspecialchars($cliente['email']); ?>"><br>
+    <label>Nome completo:</label>
+    <input type="text" name="nome_completo"
+           value="<?= htmlspecialchars($cliente['nome_completo']); ?>">
 
-    <label>Telefone:</label><br>
-    <input type="text" name="telefone" value="<?php echo htmlspecialchars($cliente['telefone']); ?>"><br>
+    <label>Email:</label>
+    <input type="email" name="email"
+           value="<?= htmlspecialchars($cliente['email']); ?>">
 
-    <label>Endereço:</label><br>
-    <input type="text" name="endereco" value="<?php echo htmlspecialchars($cliente['endereco']); ?>"><br><br>
+    <label>Telefone:</label>
+    <input type="text" name="telefone"
+           value="<?= htmlspecialchars($cliente['telefone']); ?>">
 
-    <label>Nova senha (opcional):</label><br>
-    <input type="password" name="nova_senha"><br><br>
+    <label>Endereço:</label>
+    <input type="text" name="endereco"
+           value="<?= htmlspecialchars($cliente['endereco']); ?>">
+
+    <label>Nova senha (opcional):</label>
+    <input type="password" name="nova_senha">
 
     <button type="submit">Salvar Alterações</button>
+
 </form>
+</div>
 
 <h2>📦 Meus Pedidos</h2>
+
 <table>
-<tr><th>ID</th><th>Data</th><th>Status</th><th>Ver</th></tr>
+<tr>
+    <th>ID</th>
+    <th>Data</th>
+    <th>Status</th>
+    <th>Ver</th>
+</tr>
+
 <?php if(mysqli_num_rows($pedidos) > 0){ 
     while($p = mysqli_fetch_assoc($pedidos)){ ?>
     <tr>
-        <td><?php echo $p['idPedido']; ?></td>
-        <td><?php echo $p['data_pedido']; ?></td>
-        <td><?php echo $p['status'] ?? 'Pendente'; ?></td>
-        <td><a href="ver_pedidos.php?id=<?php echo $p['idPedido']; ?>">Ver Itens</a></td>
+        <td><?= $p['idPedido']; ?></td>
+        <td><?= $p['data_pedido']; ?></td>
+        <td><?= $p['status'] ?? 'Pendente'; ?></td>
+        <td><a class="btn" href="ver_pedidos.php?id=<?= $p['idPedido']; ?>">Ver Itens</a></td>
     </tr>
 <?php } } else { ?>
     <tr><td colspan="4">Nenhum pedido encontrado.</td></tr>
 <?php } ?>
 </table>
-  <br>
-  <a class="btn" href="compras.php">🛒 Voltar às Compras</a>
-  <a class="btn" href="../index.php">🏠 Início</a>
+
+<div class="links-center">
+    <a class="btn" href="compras.php">🛒 Voltar às Compras</a>
+    <a class="btn" href="../index.php">🏠 Início</a>
+</div>
+
 </body>
+</html>
+
 </html>
 
 

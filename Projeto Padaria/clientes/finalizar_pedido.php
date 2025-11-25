@@ -55,14 +55,76 @@ unset($_SESSION['carrinho']);
 <head>
     <meta charset="UTF-8">
     <title>Pedido Finalizado</title>
+
+<style>
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #fff7e0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 80px auto;
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 0 12px rgba(0,0,0,0.1);
+        border-top: 10px solid #ffcb45;
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 26px;
+    }
+
+    p {
+        font-size: 18px;
+        color: #444;
+    }
+
+    strong {
+        color: #333;
+    }
+
+    .btn {
+        display: inline-block;
+        background: #ffcb45;
+        color: #333;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        margin: 12px 8px;
+        border: 2px solid #f8d447;
+        transition: .2s;
+    }
+
+    .btn:hover {
+        background: #f8d447;
+    }
+</style>
+
 </head>
 <body>
 
-<h2>✅ Pedido Finalizado com Sucesso!</h2>
-<p>Obrigado pela compra, <strong><?php echo $_SESSION['cliente']['nome']; ?></strong>! Seu pedido foi registrado.</p>
+<div class="container">
+    <h2>✅ Pedido Finalizado com Sucesso!</h2>
 
-<a href="compras.php" class="btn">🛍️ Voltar às Compras</a>
-<a href="../index.php" class="btn">🏠 Voltar ao Início</a>
+    <p>
+        Obrigado pela compra, 
+        <strong><?= $_SESSION['cliente']['nome']; ?></strong>! <br>
+        Seu pedido foi registrado e está sendo processado.
+    </p>
+
+    <a href="compras.php" class="btn">🛍️ Voltar às Compras</a>
+    <a href="../index.php" class="btn">🏠 Página Inicial</a>
+</div>
 
 </body>
+</html>
+
 </html>

@@ -55,6 +55,97 @@ if (isset($_GET['remover'])) {
 <head>
 <meta charset="UTF-8">
 <title>Seu Carrinho</title>
+
+<style>
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #fff7e0;
+        margin: 0;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 25px;
+    }
+
+    .top-links {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .btn {
+        display: inline-block;
+        background: #ffcb45;
+        padding: 10px 18px;
+        border-radius: 6px;
+        color: #333;
+        font-weight: bold;
+        text-decoration: none;
+        margin: 5px;
+        transition: 0.2s;
+    }
+
+    .btn:hover {
+        background: #f8d447;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #ffffff;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        margin-top: 20px;
+    }
+
+    th {
+        background: #ffcb45;
+        padding: 14px;
+        text-align: left;
+        color: #333;
+        font-size: 16px;
+        border-bottom: 3px solid #f8d447;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #f2e5b3;
+        font-size: 15px;
+        color: #333;
+    }
+
+    tr:hover td {
+        background: #fff4c9;
+        transition: 0.2s;
+    }
+
+    img {
+        border-radius: 8px;
+        border: 2px solid #f8d447;
+    }
+
+    .total-row td {
+        background: #fff3c2;
+        font-size: 17px;
+        font-weight: bold;
+    }
+
+    .empty {
+        text-align: center;
+        font-size: 18px;
+        padding: 25px;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        width: 350px;
+        margin: 40px auto;
+        color: #444;
+    }
+</style>
+
 </head>
 <body>
 
@@ -67,7 +158,7 @@ if (isset($_GET['remover'])) {
 
 <?php
 if (empty($_SESSION['carrinho'])) {
-    echo "<p>Seu carrinho está vazio.</p>";
+    echo "<div class='empty'>Seu carrinho está vazio.</div>";
 } else {
     echo "<table>";
     echo "<tr><th>Produto</th><th>Imagem</th><th>Preço</th><th>Qtd</th><th>Total</th><th>Ação</th></tr>";
@@ -96,7 +187,6 @@ if (empty($_SESSION['carrinho'])) {
         $subtotal = $preco * $qtd;
         $totalGeral += $subtotal;
 
-
         echo "<tr>";
         echo "<td>{$nome}</td>";
         echo "<td><img src='../{$p['fotos']}' width='80'></td>";
@@ -107,11 +197,17 @@ if (empty($_SESSION['carrinho'])) {
         echo "</tr>";
     }
 
-    echo "<tr><td colspan='4'><strong>Total Geral:</strong></td><td colspan='2'><strong>R$ " . number_format($totalGeral, 2, ',', '.') . "</strong></td></tr>";
+    echo "<tr class='total-row'>
+            <td colspan='4'>Total Geral:</td>
+            <td colspan='2'>R$ " . number_format($totalGeral, 2, ',', '.') . "</td>
+          </tr>";
     echo "</table>";
+
     echo "<br><a href='finalizar_pedido.php' class='btn'>Finalizar Pedido</a>";
 }
 ?>
 
 </body>
+</html>
+
 </html>
