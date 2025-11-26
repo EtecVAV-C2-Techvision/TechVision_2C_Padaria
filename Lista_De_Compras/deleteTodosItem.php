@@ -1,5 +1,5 @@
 <?php
-require "proteger.php"; // agora usa autenticação por token
+require "proteger.php";
 
 header("Content-Type: text/plain; charset=utf-8");
 

@@ -27,25 +27,15 @@ if ($verifica->num_rows > 0) {
     exit;
 }
 
-// Criptografa senha
 $hash = password_hash($senha, PASSWORD_DEFAULT);
 
-// Insere novo usuário
 $sql = "INSERT INTO usuarios (nome, email, senha) VALUES ('$nome', '$email', '$hash')";
 
 if ($conn->query($sql)) {
 
-    // Pega o ID do novo usuário
     $idNovo = $conn->insert_id;
-
-    // 🔥 Gera token automático, igual ao login
     $token = hash("sha256", uniqid() . rand() . microtime());
-
-    // Atualiza o token no usuário
     $conn->query("UPDATE usuarios SET token='$token' WHERE id=$idNovo");
-
-    // Retorna dados necessários
-    // Formato: OK|TOKEN|NOME
     echo "OK|" . $token . "|" . $nome;
 
 } else {

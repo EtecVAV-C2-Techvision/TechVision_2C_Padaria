@@ -27,10 +27,7 @@ if ($result->num_rows == 1) {
 
     if (password_verify($senha, $user["senha"])) {
 
-        // CRIAR TOKEN
-        $token = bin2hex(random_bytes(25)); // 50 chars
-
-        // GRAVAR TOKEN NO BANCO
+        $token = bin2hex(random_bytes(25));
         $idUser = $user["id"];
         $conn->query("UPDATE usuarios SET token='$token' WHERE id=$idUser");
 

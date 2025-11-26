@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 25/11/2025 às 01:04
+-- Tempo de geração: 26/11/2025 às 01:04
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -62,7 +62,34 @@ CREATE TABLE `tbcompras` (
 
 INSERT INTO `tbcompras` (`idItem`, `nome`, `quantidade`, `idCat`) VALUES
 (108, 'Dipirona ', 90, 12),
-(110, 'Chá ', 4, 1);
+(110, 'Chá ', 4, 1),
+(111, 'Coca', 10, 1),
+(112, 'Suco de Laranja', 25, 1),
+(113, 'Água Mineral 500ml', 80, 1),
+(114, 'Guaraná Antártica', 40, 1),
+(115, 'Energético RedBull', 30, 1),
+(116, 'Leite Integral', 60, 1),
+(117, 'Café em Pó Tradicional', 50, 1),
+(118, 'Paracetamol', 100, 12),
+(119, 'Ibuprofeno', 90, 12),
+(120, 'Soro Fisiológico 500ml', 45, 12),
+(121, 'Vitamina C', 70, 12),
+(122, 'Curativo Band-Aid', 200, 12),
+(123, 'Camiseta Básica', 40, 13),
+(124, 'Calça Jeans', 25, 13),
+(125, 'Tênis Casual', 15, 13),
+(126, 'Mochila Escolar', 20, 13),
+(127, 'Boné Aba Curva', 35, 13),
+(128, 'Caderno 10 matérias', 50, 14),
+(129, 'Lápis HB', 200, 14),
+(130, 'Caneta Azul', 300, 14),
+(131, 'Borracha Branca', 150, 14),
+(132, 'Tesoura Escolar', 55, 14),
+(133, 'Pão Francês', 300, 15),
+(134, 'Sonho', 40, 15),
+(135, 'Bolo de Chocolate', 12, 15),
+(136, 'Rosquinha Açucarada', 60, 15),
+(137, 'Croissant', 30, 15);
 
 -- --------------------------------------------------------
 
@@ -123,7 +150,7 @@ ALTER TABLE `tbcategorias`
 -- AUTO_INCREMENT de tabela `tbcompras`
 --
 ALTER TABLE `tbcompras`
-  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `idItem` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`

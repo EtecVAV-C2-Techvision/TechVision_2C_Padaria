@@ -29,7 +29,6 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Se tiver categoria, filtra
 if (isset($_GET["idCat"])) {
     $idCat = intval($_GET["idCat"]);
     $sql = "SELECT * FROM tbcompras WHERE idCat = $idCat ORDER BY nome ASC";

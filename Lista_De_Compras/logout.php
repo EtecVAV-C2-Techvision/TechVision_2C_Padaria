@@ -14,7 +14,6 @@ if ($token == "") {
     exit;
 }
 
-// Remove token do usuário
 $sql = "UPDATE usuarios SET token='' WHERE token='$token'";
 $conn->query($sql);
 
