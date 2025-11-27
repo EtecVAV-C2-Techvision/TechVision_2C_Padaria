@@ -5,32 +5,91 @@ include('../conexao.php');
 $idCli = (int) $_SESSION['cliente']['idCli'];
 $idPedido = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 
-// Quando o cliente clicar em "Pagar"
-if (isset($_POST['pagar'])) {
-    $sql = "UPDATE pedidos SET status='Em processo' WHERE idPedido=? AND idCli=?";
+/*
+  Função auxiliar para buscar o pedido (útil caso queira reusar).
+*/
+function buscarPedido($conn, $idPedido, $idCli) {
+    $sql = "SELECT * FROM pedidos WHERE idPedido = ? AND idCli = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ii", $idPedido, $idCli);
     $stmt->execute();
-
-    if ($stmt->affected_rows > 0) {
-        echo "<script>alert('✅ Pagamento realizado com sucesso! Pedido em processo.');window.location='ver_pedidos.php?id=$idPedido';</script>";
-    } else {
-        echo "<script>alert('❌ Não foi possível processar o pagamento.');window.location='ver_pedidos.php?id=$idPedido';</script>";
-    }
-    exit;
+    return $stmt->get_result()->fetch_assoc();
 }
 
-// Verifica se o pedido pertence ao cliente
-$sql = "SELECT * FROM pedidos WHERE idPedido = ? AND idCli = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ii", $idPedido, $idCli);
-$stmt->execute();
-$pedido = $stmt->get_result()->fetch_assoc();
+// BUSCA INICIAL DO PEDIDO
+$pedido = buscarPedido($conn, $idPedido, $idCli);
 
 if (!$pedido) {
     echo "<script>alert('Pedido não encontrado.');window.location='perfil_cliente.php';</script>";
     exit;
 }
+
+// Normaliza status (remove espaços e trata NULL)
+$status = isset($pedido['status']) ? trim($pedido['status']) : '';
+if ($status === '') $status = 'Pendente';
+
+// TRATAMENTO DO POST: PAGAR
+if (isset($_POST['pagar'])) {
+
+    // 1) CALCULAR TOTAL REAL DO PEDIDO
+    $sqlTotal = $conn->prepare("
+        SELECT SUM(quantidade * preco_unitario) AS total
+        FROM itens_pedido
+        WHERE idPedido = ?
+    ");
+    $sqlTotal->bind_param("i", $idPedido);
+    $sqlTotal->execute();
+    $resultado = $sqlTotal->get_result()->fetch_assoc();
+    $totalPedido = $resultado['total'] ?? 0;
+
+    // 2) SALVAR TOTAL NA TABELA pedidos
+    $sqlSalvar = $conn->prepare("UPDATE pedidos SET total=? WHERE idPedido=?");
+    $sqlSalvar->bind_param("di", $totalPedido, $idPedido);
+    $sqlSalvar->execute();
+
+    // 3) ALTERAR STATUS NORMALMENTE
+    if ($status === 'Pendente') {
+        $sql = "UPDATE pedidos SET status='Em processo' WHERE idPedido=? AND idCli=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $idPedido, $idCli);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo "<script>alert('✅ Pagamento realizado com sucesso! Pedido em processo.');window.location='ver_pedidos.php?id=$idPedido';</script>";
+        } else {
+            echo "<script>alert('❌ Não foi possível processar o pagamento.');window.location='ver_pedidos.php?id=$idPedido';</script>";
+        }
+    } else {
+        echo "<script>alert('Este pedido não pode ser pago neste status.');window.location='ver_pedidos.php?id=$idPedido';</script>";
+    }
+    exit;
+}
+
+
+// TRATAMENTO DO POST: CANCELAR
+if (isset($_POST['cancelar'])) {
+    // permite cancelar se estiver Pendente ou Em processo
+    if ($status === 'Pendente' || $status === 'Em processo') {
+        $sql = "UPDATE pedidos SET status='Cancelado' WHERE idPedido=? AND idCli=?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("ii", $idPedido, $idCli);
+        $stmt->execute();
+
+        if ($stmt->affected_rows > 0) {
+            echo "<script>alert('❌ Pedido cancelado com sucesso.');window.location='ver_pedidos.php?id=$idPedido';</script>";
+        } else {
+            echo "<script>alert('Erro ao cancelar o pedido.');window.location='ver_pedidos.php?id=$idPedido';</script>";
+        }
+    } else {
+        echo "<script>alert('Este pedido não pode mais ser cancelado.');window.location='ver_pedidos.php?id=$idPedido';</script>";
+    }
+    exit;
+}
+
+// Se chegou aqui, pede-se novamente os dados (por segurança) — especialmente útil se alguém atualizou via outra ação
+$pedido = buscarPedido($conn, $idPedido, $idCli);
+$status = isset($pedido['status']) ? trim($pedido['status']) : '';
+if ($status === '') $status = 'Pendente';
 
 // Busca os itens do pedido
 $sql_itens = "
@@ -45,13 +104,12 @@ $stmt_itens->execute();
 $itens = $stmt_itens->get_result();
 
 $total = 0;
-$status = $pedido['status'] ?: 'Pendente';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
-<title>Itens do Pedido #<?= $idPedido ?></title>
+<title>Itens do Pedido #<?= htmlspecialchars($idPedido) ?></title>
 
 <style>
     body {
@@ -146,6 +204,25 @@ $status = $pedido['status'] ?: 'Pendente';
         background: #218838;
     }
 
+    /* BOTÃO CANCELAR */
+    .cancelar {
+        background: #dc3545;
+        border: none;
+        color: #fff;
+        font-weight: bold;
+        padding: 12px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: .2s;
+        width: 220px;
+        font-size: 16px;
+        margin-top: 10px;
+    }
+
+    .cancelar:hover {
+        background: #c82333;
+    }
+
     .total {
         text-align: right;
         font-size: 20px;
@@ -170,7 +247,7 @@ $status = $pedido['status'] ?: 'Pendente';
 </head>
 <body>
 
-<h2>📦 Pedido #<?= $idPedido ?></h2>
+<h2>📦 Pedido #<?= htmlspecialchars($idPedido) ?></h2>
 
 <p>
     <strong>Data:</strong> <?= htmlspecialchars($pedido['data_pedido']) ?>  
@@ -192,9 +269,9 @@ $status = $pedido['status'] ?: 'Pendente';
   ?>
     <tr>
       <td><?= htmlspecialchars($item['nome']) ?></td>
-      <td><img src="../<?= htmlspecialchars($item['fotos']) ?>" width="80"></td>
+      <td><img src="../<?= htmlspecialchars($item['fotos']) ?>" width="80" alt="<?= htmlspecialchars($item['nome']) ?>"></td>
       <td><?= number_format($item['preco_unitario'], 2, ',', '.') ?></td>
-      <td><?= $item['quantidade'] ?></td>
+      <td><?= (int)$item['quantidade'] ?></td>
       <td><?= number_format($subtotal, 2, ',', '.') ?></td>
     </tr>
   <?php endwhile; ?>
@@ -202,12 +279,29 @@ $status = $pedido['status'] ?: 'Pendente';
 
 <p class="total">💰 Total do Pedido: R$ <?= number_format($total, 2, ',', '.') ?></p>
 
-<?php if ($status == 'Pendente'): ?>
+<!-- BOTÕES DE AÇÃO (usa $status normalizado) -->
+<?php if ($status === 'Pendente'): ?>
     <form method="post" style="text-align:center; margin-top:20px;">
         <button type="submit" name="pagar" class="pagar">💳 Pagar Pedido</button>
     </form>
-<?php else: ?>
-    <p class="status-ok">✅ Pedido já pago e em processo!</p>
+<?php endif; ?>
+
+<?php if ($status === 'Pendente' || $status === 'Em processo'): ?>
+    <form method="post" style="text-align:center;">
+        <button type="submit" name="cancelar" class="cancelar" onclick="return confirm('Tem certeza que deseja cancelar este pedido?');">❌ Cancelar Pedido</button>
+    </form>
+<?php endif; ?>
+
+<?php if ($status === 'Em processo'): ?>
+    <p class="status-ok">⚠ Pedido em processamento.</p>
+<?php endif; ?>
+
+<?php if ($status === 'Cancelado'): ?>
+    <p class="status-ok" style="color:#dc3545;">❌ Pedido Cancelado.</p>
+<?php endif; ?>
+
+<?php if ($status !== 'Pendente' && $status !== 'Em processo' && $status !== 'Cancelado'): ?>
+    <p class="status-ok">✅ Pedido concluído!</p>
 <?php endif; ?>
 
 <div class="btns-footer">
@@ -217,6 +311,4 @@ $status = $pedido['status'] ?: 'Pendente';
 </div>
 
 </body>
-</html>
-
 </html>

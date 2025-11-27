@@ -20,6 +20,8 @@ include "proteger.php";
         <?php if ($_SESSION['funcao'] == 'gerente'): ?>
             <a href='cadastrar.php'>Cadastrar Funcionário</a>
             <a href='listar_funcionarios.php'>Gerenciar Funcionários</a>
+            <a href='gerenciar_clientes.php'>Gerenciar Clientes</a>
+             <a href='relatorios_pedidos.php'>Relatório de pedidos</a>
         <?php endif; ?>
         <?php if ($_SESSION['funcao'] == 'gerente' || $_SESSION['funcao'] == 'entregador' ): ?>
             <a href='gerenciar_pedidos.php'>Gerenciar Pedidos</a>
