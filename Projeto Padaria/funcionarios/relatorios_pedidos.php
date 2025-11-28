@@ -51,7 +51,7 @@ if ($anoParam < 2000 || $anoParam > 2100) $anoParam = (int)date('Y');
 // ===========================================
 // Atualizar totals na tabela pedidos (a partir de itens_pedido)
 // ===========================================
-// Este UPDATE irá popular pedidos.total com a soma dos itens quando estiver zerado ou NULL.
+// CORREÇÃO: atualiza SEMPRE, removendo o WHERE
 $update_sql = "
     UPDATE pedidos p
     JOIN (
@@ -60,9 +60,8 @@ $update_sql = "
         GROUP BY idPedido
     ) t ON t.idPedido = p.idPedido
     SET p.total = t.s
-    WHERE p.total IS NULL OR p.total = 0
 ";
-$conn->query($update_sql); // executa e ignora se já atualizado
+$conn->query($update_sql); // executa
 
 // ===========================================
 // Busca pedidos entregues do mês/ano selecionado
