@@ -46,6 +46,22 @@ foreach ($_SESSION['carrinho'] as $idProd => $qtd) {
     $stmt_up->execute();
 }
 
+$sql_total = "SELECT SUM(quantidade * preco_unitario) AS total 
+              FROM itens_pedido 
+              WHERE idPedido = ?";
+$stmt_total = $conn->prepare($sql_total);
+$stmt_total->bind_param("i", $id_pedido);
+$stmt_total->execute();
+$result_total = $stmt_total->get_result();
+$row_total = $result_total->fetch_assoc();
+$total_pedido = $row_total['total'] ?? 0;
+
+// Atualiza o total na tabela pedidos
+$sql_update_total = "UPDATE pedidos SET total = ? WHERE idPedido = ?";
+$stmt_update_total = $conn->prepare($sql_update_total);
+$stmt_update_total->bind_param("di", $total_pedido, $id_pedido);
+$stmt_update_total->execute();
+
 // Limpa o carrinho
 unset($_SESSION['carrinho']);
 ?>
